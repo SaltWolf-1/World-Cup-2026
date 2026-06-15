@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CreateSweepstake201,
+  CreateSweepstakeBody,
   DashboardSummary,
   GroupStanding,
   HealthStatus,
@@ -30,12 +32,13 @@ import type {
   Match,
   MatchDetail,
   Prediction,
+  SavedSweepstake,
   Team,
   TeamDetail
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
-import type { ErrorType } from '../custom-fetch';
+import type { ErrorType , BodyType } from '../custom-fetch';
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -1119,6 +1122,154 @@ export function useGetDashboardSummary<TData = Awaited<ReturnType<typeof getDash
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetDashboardSummaryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreateSweepstakeUrl = () => {
+
+
+
+
+  return `/api/sweepstakes`
+}
+
+/**
+ * @summary Save a sweepstake draw and get a shareable game ID
+ */
+export const createSweepstake = async (createSweepstakeBody: CreateSweepstakeBody, options?: RequestInit): Promise<CreateSweepstake201> => {
+
+  return customFetch<CreateSweepstake201>(getCreateSweepstakeUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createSweepstakeBody,)
+  }
+);}
+
+
+
+
+export const getCreateSweepstakeMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSweepstake>>, TError,{data: BodyType<CreateSweepstakeBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSweepstake>>, TError,{data: BodyType<CreateSweepstakeBody>}, TContext> => {
+
+const mutationKey = ['createSweepstake'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSweepstake>>, {data: BodyType<CreateSweepstakeBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSweepstake(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSweepstakeMutationResult = NonNullable<Awaited<ReturnType<typeof createSweepstake>>>
+    export type CreateSweepstakeMutationBody = BodyType<CreateSweepstakeBody>
+    export type CreateSweepstakeMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Save a sweepstake draw and get a shareable game ID
+ */
+export const useCreateSweepstake = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSweepstake>>, TError,{data: BodyType<CreateSweepstakeBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createSweepstake>>,
+        TError,
+        {data: BodyType<CreateSweepstakeBody>},
+        TContext
+      > => {
+      return useMutation(getCreateSweepstakeMutationOptions(options));
+    }
+
+export const getGetSweepstakeUrl = (gameId: string,) => {
+
+
+
+
+  return `/api/sweepstakes/${gameId}`
+}
+
+/**
+ * @summary Retrieve a saved sweepstake by game ID
+ */
+export const getSweepstake = async (gameId: string, options?: RequestInit): Promise<SavedSweepstake> => {
+
+  return customFetch<SavedSweepstake>(getGetSweepstakeUrl(gameId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSweepstakeQueryKey = (gameId: string,) => {
+    return [
+    `/api/sweepstakes/${gameId}`
+    ] as const;
+    }
+
+
+export const getGetSweepstakeQueryOptions = <TData = Awaited<ReturnType<typeof getSweepstake>>, TError = ErrorType<void>>(gameId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSweepstake>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSweepstakeQueryKey(gameId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSweepstake>>> = ({ signal }) => getSweepstake(gameId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(gameId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSweepstake>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSweepstakeQueryResult = NonNullable<Awaited<ReturnType<typeof getSweepstake>>>
+export type GetSweepstakeQueryError = ErrorType<void>
+
+
+/**
+ * @summary Retrieve a saved sweepstake by game ID
+ */
+
+export function useGetSweepstake<TData = Awaited<ReturnType<typeof getSweepstake>>, TError = ErrorType<void>>(
+ gameId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSweepstake>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSweepstakeQueryOptions(gameId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

@@ -16,6 +16,7 @@ import Predictions from "@/pages/predictions";
 import Highlights from "@/pages/highlights";
 import Knockout from "@/pages/knockout";
 import Sweepstake from "@/pages/sweepstake";
+import SweepstakeView from "@/pages/sweepstake-view";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/standings" component={Standings} />
         <Route path="/knockout" component={Knockout} />
         <Route path="/sweepstake" component={Sweepstake} />
+        <Route path="/s/:gameId" component={SweepstakeView} />
         <Route path="/predictions" component={Predictions} />
         <Route path="/highlights" component={Highlights} />
         <Route component={NotFound} />

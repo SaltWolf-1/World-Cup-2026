@@ -7,6 +7,7 @@ import { highlightsRouter } from "./highlights";
 import { predictionsRouter } from "./predictions";
 import { dashboardRouter } from "./dashboard";
 import { syncRouter } from "./sync";
+import { sweepstakesRouter } from "./sweepstakes";
 
 const router: IRouter = Router();
 
@@ -17,6 +18,7 @@ router.use("/standings", standingsRouter);
 router.use("/highlights", highlightsRouter);
 router.use("/predictions", predictionsRouter);
 router.use("/dashboard", dashboardRouter);
+router.use("/sweepstakes", sweepstakesRouter);
 router.use("/", syncRouter);
 
 export default router;

@@ -170,6 +170,28 @@ export interface Prediction {
   rating?: number;
 }
 
+export interface SweepstakeTeam {
+  id: number;
+  name: string;
+  flagCode: string;
+  group: string;
+  winChance: number;
+  rating?: number;
+}
+
+export interface SweepstakeAssignment {
+  playerName: string;
+  teams: SweepstakeTeam[];
+  color: string;
+}
+
+export interface SavedSweepstake {
+  gameId: string;
+  stage: string;
+  assignments: SweepstakeAssignment[];
+  createdAt: string;
+}
+
 export interface TopScorer {
   playerName: string;
   teamId: number;
@@ -219,5 +241,14 @@ export type ListHighlightsParams = {
  * @nullable
  */
 matchId?: number | null;
+};
+
+export type CreateSweepstakeBody = {
+  stage: string;
+  assignments: SweepstakeAssignment[];
+};
+
+export type CreateSweepstake201 = {
+  gameId: string;
 };
 

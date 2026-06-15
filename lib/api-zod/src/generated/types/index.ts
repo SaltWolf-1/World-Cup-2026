@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './createSweepstake201';
+export * from './createSweepstakeBody';
 export * from './dashboardSummary';
 export * from './groupStanding';
 export * from './healthStatus';
@@ -22,7 +24,10 @@ export * from './matchEvent';
 export * from './matchEventType';
 export * from './matchStatus';
 export * from './prediction';
+export * from './savedSweepstake';
 export * from './standingEntry';
+export * from './sweepstakeAssignment';
+export * from './sweepstakeTeam';
 export * from './team';
 export * from './teamDetail';
 export * from './topScorer';

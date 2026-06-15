@@ -21,6 +21,8 @@ tags:
     description: Win predictions and odds
   - name: dashboard
     description: Dashboard summary
+  - name: sweepstakes
+    description: Saved sweepstake draws
 paths:
   /healthz:
     get:
@@ -270,6 +272,58 @@ paths:
               schema:
                 $ref: "#/components/schemas/DashboardSummary"
 
+  /sweepstakes:
+    post:
+      operationId: createSweepstake
+      tags: [sweepstakes]
+      summary: Save a sweepstake draw and get a shareable game ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [stage, assignments]
+              properties:
+                stage:
+                  type: string
+                assignments:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SweepstakeAssignment"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [gameId]
+                properties:
+                  gameId:
+                    type: string
+
+  /sweepstakes/{gameId}:
+    get:
+      operationId: getSweepstake
+      tags: [sweepstakes]
+      summary: Retrieve a saved sweepstake by game ID
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Saved sweepstake
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedSweepstake"
+        "404":
+          description: Not found
+
 components:
   schemas:
     HealthStatus:
@@ -484,6 +538,52 @@ components:
           type: boolean
         rating:
           type: number
+
+    SweepstakeTeam:
+      type: object
+      required: [id, name, flagCode, group, winChance]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        flagCode:
+          type: string
+        group:
+          type: string
+        winChance:
+          type: number
+        rating:
+          type: number
+
+    SweepstakeAssignment:
+      type: object
+      required: [playerName, teams, color]
+      properties:
+        playerName:
+          type: string
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/SweepstakeTeam"
+        color:
+          type: string
+
+    SavedSweepstake:
+      type: object
+      required: [gameId, stage, assignments, createdAt]
+      properties:
+        gameId:
+          type: string
+        stage:
+          type: string
+        assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/SweepstakeAssignment"
+        createdAt:
+          type: string
+          format: date-time
 
     DashboardSummary:
       type: object

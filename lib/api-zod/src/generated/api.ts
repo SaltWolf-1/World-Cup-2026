@@ -366,3 +366,49 @@ export const GetDashboardSummaryResponse = zod.object({
 })
 
 
+/**
+ * @summary Save a sweepstake draw and get a shareable game ID
+ */
+export const CreateSweepstakeBody = zod.object({
+  "stage": zod.string(),
+  "assignments": zod.array(zod.object({
+  "playerName": zod.string(),
+  "teams": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "flagCode": zod.string(),
+  "group": zod.string(),
+  "winChance": zod.number(),
+  "rating": zod.number().optional()
+})),
+  "color": zod.string()
+}))
+})
+
+
+/**
+ * @summary Retrieve a saved sweepstake by game ID
+ */
+export const GetSweepstakeParams = zod.object({
+  "gameId": zod.coerce.string()
+})
+
+export const GetSweepstakeResponse = zod.object({
+  "gameId": zod.string(),
+  "stage": zod.string(),
+  "assignments": zod.array(zod.object({
+  "playerName": zod.string(),
+  "teams": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "flagCode": zod.string(),
+  "group": zod.string(),
+  "winChance": zod.number(),
+  "rating": zod.number().optional()
+})),
+  "color": zod.string()
+})),
+  "createdAt": zod.coerce.date()
+})
+
+

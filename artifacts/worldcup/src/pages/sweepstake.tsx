@@ -1,10 +1,11 @@
-import { useState, useCallback, useRef } from "react";
-import { useListPredictions } from "@workspace/api-client-react";
+import { useState, useCallback } from "react";
+import { useListPredictions, useCreateSweepstake } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
   Shuffle, Users, Trophy, ChevronRight, ChevronLeft,
-  RotateCcw, Pencil, Check, Star, Zap, Award,
+  RotateCcw, Pencil, Check, Star, Zap, Award, Link2, Copy,
+  Loader2,
 } from "lucide-react";
 
 const STAGE_OPTIONS = [
@@ -348,16 +349,73 @@ function PlayersStep({
 
 // ─── Step 3: Results ──────────────────────────────────────────────────────────
 
+function ShareBar({
+  isSaving, savedGameId, onSave,
+}: {
+  isSaving: boolean;
+  savedGameId: string | null;
+  onSave: () => void;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = savedGameId
+    ? `${window.location.origin}/s/${savedGameId}`
+    : null;
+
+  const handleCopy = () => {
+    if (!shareUrl) return;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  if (shareUrl) {
+    return (
+      <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-3 py-2.5 animate-in fade-in duration-300">
+        <Link2 className="w-4 h-4 text-primary shrink-0" />
+        <span className="font-mono text-xs text-foreground/80 flex-1 truncate">{shareUrl}</span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold shrink-0 hover:brightness-110 transition-all"
+        >
+          {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? "Copied!" : "Copy"}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={onSave}
+      disabled={isSaving}
+      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-wider text-xs hover:brightness-110 shadow-[0_0_16px_rgba(204,255,0,0.2)] active:scale-98 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+    >
+      {isSaving
+        ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
+        : <><Link2 className="w-3.5 h-3.5" /> Save & Share</>
+      }
+    </button>
+  );
+}
+
 function ResultsStep({
   assignments,
   stage,
   onRedraw,
   onReset,
+  onSave,
+  isSaving,
+  savedGameId,
 }: {
   assignments: Assignment[];
   stage: string;
   onRedraw: () => void;
   onReset: () => void;
+  onSave: () => void;
+  isSaving: boolean;
+  savedGameId: string | null;
 }) {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-400">
@@ -371,10 +429,12 @@ function ResultsStep({
           </h2>
           <p className="text-muted-foreground text-sm mt-1 font-mono">{stage} · {assignments.length} players</p>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-wrap gap-2 shrink-0">
           <button
             onClick={onRedraw}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-bold text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
+            disabled={!!savedGameId}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-bold text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            title={savedGameId ? "Can't redraw after saving" : undefined}
           >
             <RotateCcw className="w-3.5 h-3.5" /> Redraw
           </button>
@@ -386,6 +446,8 @@ function ResultsStep({
           </button>
         </div>
       </div>
+
+      <ShareBar isSaving={isSaving} savedGameId={savedGameId} onSave={onSave} />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {assignments.map((a, i) => (
@@ -511,12 +573,14 @@ function PlayerCard({ assignment, index }: { assignment: Assignment; index: numb
 
 export default function Sweepstake() {
   const { data: predictions, isLoading } = useListPredictions();
+  const { mutate: saveSweepstake, isPending: isSaving } = useCreateSweepstake();
 
   const [step, setStep] = useState(0);
   const [numPlayers, setNumPlayers] = useState(10);
   const [stageIdx, setStageIdx] = useState(1); // Round of 32
   const [players, setPlayers] = useState<string[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [savedGameId, setSavedGameId] = useState<string | null>(null);
 
   const stage = STAGE_OPTIONS[stageIdx];
   const teamsPerPlayer = Math.floor(stage.teams / numPlayers);
@@ -553,12 +617,21 @@ export default function Sweepstake() {
     const named = players.map((p, i) => p.trim() || `Player ${i + 1}`);
     const result = buildAssignments(named, pool, teamsPerPlayer);
     setAssignments(result);
+    setSavedGameId(null);
   }, [getPool, players, teamsPerPlayer]);
 
   const handleReset = useCallback(() => {
     setStep(0);
     setAssignments([]);
+    setSavedGameId(null);
   }, []);
+
+  const handleSave = useCallback(() => {
+    saveSweepstake(
+      { data: { stage: stage.label, assignments } },
+      { onSuccess: (res) => setSavedGameId(res.gameId) },
+    );
+  }, [saveSweepstake, stage.label, assignments]);
 
   return (
     <div className="max-w-3xl mx-auto space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -602,6 +675,9 @@ export default function Sweepstake() {
           stage={stage.label}
           onRedraw={handleRedraw}
           onReset={handleReset}
+          onSave={handleSave}
+          isSaving={isSaving}
+          savedGameId={savedGameId}
         />
       )}
     </div>
