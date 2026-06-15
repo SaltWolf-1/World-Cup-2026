@@ -1,22 +1,32 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: World Cup 2026 API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: matches
+    description: Match operations
+  - name: teams
+    description: Team operations
+  - name: standings
+    description: Group standings
+  - name: highlights
+    description: Match highlights
+  - name: predictions
+    description: Win predictions and odds
+  - name: dashboard
+    description: Dashboard summary
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +34,242 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /matches:
+    get:
+      operationId: listMatches
+      tags: [matches]
+      summary: List all matches
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [live, upcoming, completed]
+        - name: group
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: teamId
+          in: query
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: List of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+
+  /matches/live:
+    get:
+      operationId: getLiveMatches
+      tags: [matches]
+      summary: Get currently live matches
+      responses:
+        "200":
+          description: Live matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+
+  /matches/today:
+    get:
+      operationId: getTodayMatches
+      tags: [matches]
+      summary: Get today's matches
+      responses:
+        "200":
+          description: Today's matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+
+  /matches/{id}:
+    get:
+      operationId: getMatch
+      tags: [matches]
+      summary: Get a single match with details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Match detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDetail"
+        "404":
+          description: Not found
+
+  /teams:
+    get:
+      operationId: listTeams
+      tags: [teams]
+      summary: List all teams
+      responses:
+        "200":
+          description: List of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+
+  /teams/followed:
+    get:
+      operationId: getFollowedTeams
+      tags: [teams]
+      summary: Get all followed teams
+      responses:
+        "200":
+          description: Followed teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+
+  /teams/{id}:
+    get:
+      operationId: getTeam
+      tags: [teams]
+      summary: Get team details and stats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Team detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamDetail"
+        "404":
+          description: Not found
+
+  /teams/{id}/follow:
+    post:
+      operationId: followTeam
+      tags: [teams]
+      summary: Follow a team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Followed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+    delete:
+      operationId: unfollowTeam
+      tags: [teams]
+      summary: Unfollow a team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Unfollowed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+
+  /standings:
+    get:
+      operationId: listStandings
+      tags: [standings]
+      summary: Get group standings
+      parameters:
+        - name: group
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Standings grouped by group
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupStanding"
+
+  /highlights:
+    get:
+      operationId: listHighlights
+      tags: [highlights]
+      summary: List recent highlights
+      parameters:
+        - name: matchId
+          in: query
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: Highlights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Highlight"
+
+  /predictions:
+    get:
+      operationId: listPredictions
+      tags: [predictions]
+      summary: Get win predictions and tournament odds for all teams
+      responses:
+        "200":
+          description: Predictions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prediction"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +280,241 @@ components:
       required:
         - status
 
+    Match:
+      type: object
+      required: [id, homeTeam, awayTeam, status, kickoffTime, stage]
+      properties:
+        id:
+          type: integer
+        homeTeam:
+          $ref: "#/components/schemas/Team"
+        awayTeam:
+          $ref: "#/components/schemas/Team"
+        homeScore:
+          type: ["integer", "null"]
+        awayScore:
+          type: ["integer", "null"]
+        status:
+          type: string
+          enum: [upcoming, live, completed, postponed]
+        kickoffTime:
+          type: string
+          format: date-time
+        stage:
+          type: string
+        group:
+          type: ["string", "null"]
+        venue:
+          type: ["string", "null"]
+        minute:
+          type: ["integer", "null"]
+
+    MatchDetail:
+      type: object
+      required: [id, homeTeam, awayTeam, status, kickoffTime, stage]
+      properties:
+        id:
+          type: integer
+        homeTeam:
+          $ref: "#/components/schemas/Team"
+        awayTeam:
+          $ref: "#/components/schemas/Team"
+        homeScore:
+          type: ["integer", "null"]
+        awayScore:
+          type: ["integer", "null"]
+        status:
+          type: string
+          enum: [upcoming, live, completed, postponed]
+        kickoffTime:
+          type: string
+          format: date-time
+        stage:
+          type: string
+        group:
+          type: ["string", "null"]
+        venue:
+          type: ["string", "null"]
+        minute:
+          type: ["integer", "null"]
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/Highlight"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatchEvent"
+
+    Team:
+      type: object
+      required: [id, name, flagCode, group]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        flagCode:
+          type: string
+        group:
+          type: string
+        isFollowed:
+          type: boolean
+
+    TeamDetail:
+      type: object
+      required: [id, name, flagCode, group]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        flagCode:
+          type: string
+        group:
+          type: string
+        isFollowed:
+          type: boolean
+        played:
+          type: integer
+        wins:
+          type: integer
+        draws:
+          type: integer
+        losses:
+          type: integer
+        goalsFor:
+          type: integer
+        goalsAgainst:
+          type: integer
+        points:
+          type: integer
+        winChance:
+          type: number
+        recentMatches:
+          type: array
+          items:
+            $ref: "#/components/schemas/Match"
+
+    GroupStanding:
+      type: object
+      required: [group, entries]
+      properties:
+        group:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/StandingEntry"
+
+    StandingEntry:
+      type: object
+      required: [team, played, wins, draws, losses, goalsFor, goalsAgainst, points]
+      properties:
+        team:
+          $ref: "#/components/schemas/Team"
+        played:
+          type: integer
+        wins:
+          type: integer
+        draws:
+          type: integer
+        losses:
+          type: integer
+        goalsFor:
+          type: integer
+        goalsAgainst:
+          type: integer
+        points:
+          type: integer
+
+    Highlight:
+      type: object
+      required: [id, matchId, type, minute, description]
+      properties:
+        id:
+          type: integer
+        matchId:
+          type: integer
+        type:
+          type: string
+          enum: [goal, yellow_card, red_card, substitution, var, penalty]
+        minute:
+          type: integer
+        description:
+          type: string
+        playerName:
+          type: ["string", "null"]
+        teamId:
+          type: ["integer", "null"]
+
+    MatchEvent:
+      type: object
+      required: [id, type, minute, description]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [goal, yellow_card, red_card, substitution, var, penalty, kickoff, halftime, fulltime]
+        minute:
+          type: integer
+        description:
+          type: string
+        playerName:
+          type: ["string", "null"]
+        teamId:
+          type: ["integer", "null"]
+
+    Prediction:
+      type: object
+      required: [team, winChance, semifinalChance, quarterFinalChance, roundOf16Chance, eliminated]
+      properties:
+        team:
+          $ref: "#/components/schemas/Team"
+        winChance:
+          type: number
+        semifinalChance:
+          type: number
+        quarterFinalChance:
+          type: number
+        roundOf16Chance:
+          type: number
+        eliminated:
+          type: boolean
+        rating:
+          type: number
+
+    DashboardSummary:
+      type: object
+      required: [liveMatchCount, todayMatchCount, totalGoalsToday, followedTeamsPlaying]
+      properties:
+        liveMatchCount:
+          type: integer
+        todayMatchCount:
+          type: integer
+        totalGoalsToday:
+          type: integer
+        followedTeamsPlaying:
+          type: array
+          items:
+            $ref: "#/components/schemas/Team"
+        topScorers:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopScorer"
+
+    TopScorer:
+      type: object
+      required: [playerName, teamId, teamName, goals]
+      properties:
+        playerName:
+          type: string
+        teamId:
+          type: integer
+        teamName:
+          type: string
+        goals:
+          type: integer
+        flagCode:
+          type: string
