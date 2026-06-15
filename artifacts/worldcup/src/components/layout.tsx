@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Trophy, Calendar, Users, BarChart3, TrendingUp, PlaySquare, Hexagon } from "lucide-react";
+import { Trophy, Calendar, Users, BarChart3, PlaySquare, Hexagon, GitBranch, TableProperties } from "lucide-react";
 import { useGetFollowedTeams } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/", label: "Dashboard", icon: Hexagon },
     { href: "/matches", label: "Matches", icon: Calendar },
     { href: "/teams", label: "Teams", icon: Users },
-    { href: "/standings", label: "Standings", icon: Trophy },
+    { href: "/standings", label: "Group Tables", icon: TableProperties },
+    { href: "/knockout", label: "Knockout", icon: GitBranch },
     { href: "/predictions", label: "Predictions", icon: BarChart3 },
     { href: "/highlights", label: "Highlights", icon: PlaySquare },
   ];

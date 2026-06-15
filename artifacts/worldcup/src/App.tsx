@@ -14,6 +14,7 @@ import TeamDetail from "@/pages/team-detail";
 import Standings from "@/pages/standings";
 import Predictions from "@/pages/predictions";
 import Highlights from "@/pages/highlights";
+import Knockout from "@/pages/knockout";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/teams" component={Teams} />
         <Route path="/teams/:id" component={TeamDetail} />
         <Route path="/standings" component={Standings} />
+        <Route path="/knockout" component={Knockout} />
         <Route path="/predictions" component={Predictions} />
         <Route path="/highlights" component={Highlights} />
         <Route component={NotFound} />
