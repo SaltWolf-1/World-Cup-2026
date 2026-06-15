@@ -71,10 +71,20 @@ function buildAssignments(
   pool: Team[],
   teamsPerPlayer: number,
 ): Assignment[] {
-  const shuffled = shuffle(pool);
+  const n = players.length;
+
+  // Split pool into `teamsPerPlayer` tiers of size `n`, shuffle each tier
+  // independently, then deal one team per tier to each player.
+  // Result: each player gets one team from every power-band, keeping the
+  // draw random while evening out average favourability.
+  const tiers: Team[][] = [];
+  for (let t = 0; t < teamsPerPlayer; t++) {
+    tiers.push(shuffle(pool.slice(t * n, (t + 1) * n)));
+  }
+
   return players.map((name, i) => ({
     playerName: name,
-    teams: shuffled.slice(i * teamsPerPlayer, (i + 1) * teamsPerPlayer),
+    teams: tiers.map((tier) => tier[i]),
     color: PLAYER_COLORS[i % PLAYER_COLORS.length],
   }));
 }
