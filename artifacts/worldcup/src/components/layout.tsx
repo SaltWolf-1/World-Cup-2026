@@ -3,20 +3,21 @@ import { Link, useLocation } from "wouter";
 import {
   Trophy, Calendar, Users, BarChart3, PlaySquare,
   Hexagon, GitBranch, TableProperties, Menu, X,
-  Radio, Star, ChevronRight,
+  Radio, Star, ChevronRight, Ticket,
 } from "lucide-react";
 import { useGetFollowedTeams, useGetLiveMatches } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
 
 const navItems = [
-  { href: "/",           label: "Dashboard",   icon: Hexagon,         shortLabel: "Home" },
-  { href: "/matches",    label: "Matches",      icon: Calendar,        shortLabel: "Matches" },
-  { href: "/teams",      label: "Teams",        icon: Users,           shortLabel: "Teams" },
-  { href: "/standings",  label: "Group Tables", icon: TableProperties, shortLabel: "Groups" },
-  { href: "/knockout",   label: "Knockout",     icon: GitBranch,       shortLabel: "Bracket" },
-  { href: "/predictions",label: "Predictions",  icon: BarChart3,       shortLabel: "Odds" },
-  { href: "/highlights", label: "Highlights",   icon: PlaySquare,      shortLabel: "Clips" },
+  { href: "/",            label: "Dashboard",   icon: Hexagon,         shortLabel: "Home" },
+  { href: "/matches",     label: "Matches",     icon: Calendar,        shortLabel: "Matches" },
+  { href: "/teams",       label: "Teams",       icon: Users,           shortLabel: "Teams" },
+  { href: "/standings",   label: "Group Tables",icon: TableProperties, shortLabel: "Groups" },
+  { href: "/knockout",    label: "Knockout",    icon: GitBranch,       shortLabel: "Bracket" },
+  { href: "/sweepstake",  label: "Sweepstake",  icon: Ticket,          shortLabel: "Draw" },
+  { href: "/predictions", label: "Predictions", icon: BarChart3,       shortLabel: "Odds" },
+  { href: "/highlights",  label: "Highlights",  icon: PlaySquare,      shortLabel: "Clips" },
 ];
 
 const bottomTabItems = navItems.slice(0, 4);
