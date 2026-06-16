@@ -101,42 +101,42 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  /* Light Theme (High Contrast Sport) */
-  --background: 0 0% 96%;
-  --foreground: 0 0% 4%;
-  --border: 0 0% 90%;
+  /* Light Theme — FIFA WC 2026 */
+  --background: 0 0% 97%;
+  --foreground: 220 20% 8%;
+  --border: 220 13% 88%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 4%;
-  --card-border: 0 0% 90%;
-  --sidebar: 0 0% 96%;
-  --sidebar-foreground: 0 0% 4%;
-  --sidebar-border: 0 0% 90%;
-  --sidebar-primary: 220 100% 50%;
+  --card-foreground: 220 20% 8%;
+  --card-border: 220 13% 88%;
+  --sidebar: 220 15% 95%;
+  --sidebar-foreground: 220 20% 8%;
+  --sidebar-border: 220 13% 88%;
+  --sidebar-primary: 354 84% 46%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 92%;
-  --sidebar-accent-foreground: 0 0% 4%;
-  --sidebar-ring: 220 100% 50%;
+  --sidebar-accent: 220 13% 91%;
+  --sidebar-accent-foreground: 220 20% 8%;
+  --sidebar-ring: 354 84% 46%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 4%;
-  --popover-border: 0 0% 90%;
-  --primary: 220 100% 50%;
+  --popover-foreground: 220 20% 8%;
+  --popover-border: 220 13% 88%;
+  --primary: 354 84% 46%;        /* FIFA Crimson Red */
   --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 92%;
-  --secondary-foreground: 0 0% 4%;
-  --muted: 0 0% 92%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 75 100% 45%;
-  --accent-foreground: 0 0% 4%;
+  --secondary: 220 13% 91%;
+  --secondary-foreground: 220 20% 8%;
+  --muted: 220 13% 91%;
+  --muted-foreground: 220 10% 46%;
+  --accent: 216 98% 46%;         /* USA/Canada Blue */
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 90%;
-  --ring: 220 100% 50%;
+  --input: 220 13% 88%;
+  --ring: 354 84% 46%;
 
-  --chart-1: 220 100% 50%;
-  --chart-2: 75 100% 45%;
-  --chart-3: 0 84% 60%;
-  --chart-4: 280 100% 60%;
-  --chart-5: 45 100% 55%;
+  --chart-1: 354 84% 46%;        /* FIFA Red */
+  --chart-2: 216 98% 46%;        /* USA Blue */
+  --chart-3: 145 84% 30%;        /* Mexico Green */
+  --chart-4: 45 100% 50%;        /* Gold */
+  --chart-5: 220 10% 60%;        /* Neutral */
 
   --app-font-sans: 'Outfit', sans-serif;
   --app-font-serif: Georgia, serif;
@@ -151,42 +151,42 @@
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  /* Dark Theme (Carbon & Neon) */
-  --background: 0 0% 4%;
-  --foreground: 0 0% 98%;
-  --border: 0 0% 12%;
-  --card: 0 0% 6%;
-  --card-foreground: 0 0% 98%;
-  --card-border: 0 0% 12%;
-  --sidebar: 0 0% 2%;
-  --sidebar-foreground: 0 0% 98%;
-  --sidebar-border: 0 0% 12%;
-  --sidebar-primary: 75 100% 50%;
-  --sidebar-primary-foreground: 0 0% 4%;
-  --sidebar-accent: 0 0% 10%;
-  --sidebar-accent-foreground: 0 0% 98%;
-  --sidebar-ring: 75 100% 50%;
-  --popover: 0 0% 6%;
-  --popover-foreground: 0 0% 98%;
-  --popover-border: 0 0% 12%;
-  --primary: 75 100% 50%; /* Neon Lime */
-  --primary-foreground: 0 0% 4%;
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 10%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 220 100% 55%; /* Electric Blue */
+  /* Dark Theme — FIFA WC 2026 */
+  --background: 220 15% 6%;
+  --foreground: 0 0% 97%;
+  --border: 220 12% 14%;
+  --card: 220 15% 8%;
+  --card-foreground: 0 0% 97%;
+  --card-border: 220 12% 14%;
+  --sidebar: 220 18% 4%;
+  --sidebar-foreground: 0 0% 97%;
+  --sidebar-border: 220 12% 14%;
+  --sidebar-primary: 354 84% 58%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 15% 11%;
+  --sidebar-accent-foreground: 0 0% 97%;
+  --sidebar-ring: 354 84% 58%;
+  --popover: 220 15% 8%;
+  --popover-foreground: 0 0% 97%;
+  --popover-border: 220 12% 14%;
+  --primary: 354 84% 58%;        /* FIFA Crimson Red */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 15% 11%;
+  --secondary-foreground: 0 0% 97%;
+  --muted: 220 15% 11%;
+  --muted-foreground: 220 10% 58%;
+  --accent: 216 98% 62%;         /* USA/Canada Blue */
   --accent-foreground: 0 0% 100%;
-  --destructive: 0 100% 50%; /* Bright Red */
+  --destructive: 0 90% 56%;
   --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 15%;
-  --ring: 75 100% 50%;
+  --input: 220 12% 16%;
+  --ring: 354 84% 58%;
 
-  --chart-1: 75 100% 50%;
-  --chart-2: 220 100% 55%;
-  --chart-3: 0 100% 50%;
-  --chart-4: 280 100% 65%;
-  --chart-5: 45 100% 55%;
+  --chart-1: 354 84% 58%;        /* FIFA Red */
+  --chart-2: 216 98% 62%;        /* USA Blue */
+  --chart-3: 145 84% 44%;        /* Mexico Green */
+  --chart-4: 45 100% 55%;        /* Gold */
+  --chart-5: 220 10% 65%;        /* Neutral */
 }
 
 @layer base {
@@ -197,4 +197,9 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+}
+
+/* iOS safe area support */
+.safe-area-pb {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 }

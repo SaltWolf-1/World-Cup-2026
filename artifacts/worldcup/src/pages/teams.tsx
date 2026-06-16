@@ -35,7 +35,9 @@ export default function Teams() {
     }
   };
 
-  const filteredTeams = teams?.filter(t => t.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredTeams = teams
+    ?.filter(t => t.name.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -78,10 +80,10 @@ export default function Teams() {
                 <Star className={cn("w-4 h-4", team.isFollowed && "fill-current")} />
               </Button>
               
-              <img 
-                src={`https://flagcdn.com/w80/${team.flagCode}.png`} 
-                alt={team.name} 
-                className="w-16 h-auto mx-auto mb-4 rounded shadow-md group-hover:scale-110 transition-transform duration-300"
+              <img
+                src={`https://flagcdn.com/w80/${team.flagCode}.png`}
+                alt={team.name}
+                className="w-16 h-11 object-cover mx-auto mb-4 rounded shadow-md group-hover:scale-110 transition-transform duration-300"
               />
               <h3 className="font-bold uppercase tracking-tight group-hover:text-primary transition-colors line-clamp-1">{team.name}</h3>
               <p className="text-xs font-mono text-muted-foreground mt-1 uppercase">Group {team.group}</p>

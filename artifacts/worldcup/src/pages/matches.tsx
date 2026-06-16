@@ -1,24 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useListMatches, ListMatchesStatus } from "@workspace/api-client-react";
 import { MatchCard } from "@/components/match-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search } from "lucide-react";
+import { Search, RefreshCw } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const REFRESH_OPTIONS = [
+  { label: "10s", value: 10_000 },
+  { label: "30s", value: 30_000 },
+  { label: "2 min", value: 120_000 },
+];
+
+function useTimeAgo(ts: number | null) {
+  const [label, setLabel] = useState("–");
+  useEffect(() => {
+    if (!ts) return;
+    const update = () => {
+      const diff = Math.floor((Date.now() - ts) / 1000);
+      if (diff < 5) setLabel("just now");
+      else if (diff < 60) setLabel(`${diff}s ago`);
+      else setLabel(`${Math.floor(diff / 60)}m ago`);
+    };
+    update();
+    const id = setInterval(update, 5_000);
+    return () => clearInterval(id);
+  }, [ts]);
+  return label;
+}
 
 export default function Matches() {
   const [status, setStatus] = useState<ListMatchesStatus | "all">("all");
   const [group, setGroup] = useState<string>("all");
+  const [refreshInterval, setRefreshInterval] = useState(30_000);
 
-  const { data: matches, isLoading } = useListMatches({
+  const { data: matches, isLoading, dataUpdatedAt, refetch, isFetching } = useListMatches({
     status: status === "all" ? undefined : status,
     group: group === "all" ? undefined : group,
-  }, { query: { refetchInterval: 30000 } });
+  }, { query: { refetchInterval: refreshInterval } });
 
+  const timeAgo = useTimeAgo(dataUpdatedAt || null);
   const groups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black uppercase tracking-tight skew-x-[-5deg]">Match <span className="text-primary">Schedule</span></h1>
@@ -52,6 +78,39 @@ export default function Matches() {
         </div>
       </header>
 
+      {/* Refresh Controls */}
+      <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/40 border border-border">
+        <div className="flex items-center gap-2">
+          <RefreshCw className={cn("w-3.5 h-3.5 text-muted-foreground", isFetching && "animate-spin text-primary")} />
+          <span className="text-xs font-mono text-muted-foreground">
+            Updated <span className="text-foreground">{timeAgo}</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mr-1">Auto:</span>
+          {REFRESH_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => setRefreshInterval(opt.value)}
+              className={cn(
+                "px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase transition-all",
+                refreshInterval === opt.value
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+          <button
+            onClick={() => refetch()}
+            className="ml-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-secondary text-muted-foreground hover:text-foreground transition-all"
+          >
+            Now
+          </button>
+        </div>
+      </div>
+
       <div className="grid gap-4">
         {isLoading ? (
           <>
@@ -70,8 +129,8 @@ export default function Matches() {
             <Search className="w-12 h-12 mb-4 opacity-20" />
             <p className="font-mono uppercase tracking-wider text-lg">No matches found</p>
             <p className="text-sm mt-2">Adjust your filters to see more results</p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="mt-6 font-mono uppercase tracking-wider text-xs"
               onClick={() => { setStatus("all"); setGroup("all"); }}
             >

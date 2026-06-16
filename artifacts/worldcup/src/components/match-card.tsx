@@ -11,7 +11,7 @@ export function MatchCard({ match, compact = false }: { match: Match, compact?: 
   return (
     <Link href={`/matches/${match.id}`}>
       <div className={cn(
-        "group relative bg-card border border-border rounded-lg overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(204,255,0,0.1)] cursor-pointer flex flex-col",
+        "group relative bg-card border border-border rounded-lg overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_20px_rgba(232,25,60,0.1)] cursor-pointer flex flex-col",
         isLive && "border-destructive/50 shadow-[0_0_15px_rgba(255,0,0,0.1)] hover:border-destructive hover:shadow-[0_0_25px_rgba(255,0,0,0.2)]"
       )}>
         {/* Status Bar */}
@@ -38,9 +38,9 @@ export function MatchCard({ match, compact = false }: { match: Match, compact?: 
           {/* Home Team */}
           <div className="flex flex-col items-center flex-1 gap-2">
             <img 
-              src={`https://flagcdn.com/w40/${match.homeTeam.flagCode}.png`} 
+              src={`https://flagcdn.com/w40/${match.homeTeam.flagCode}.png`}
               alt={`${match.homeTeam.name} flag`}
-              className="w-10 h-auto rounded-sm shadow-sm group-hover:scale-110 transition-transform"
+              className="w-10 h-7 object-cover rounded-sm shadow-sm group-hover:scale-110 transition-transform"
             />
             <span className="font-bold text-center leading-tight">{match.homeTeam.name}</span>
           </div>
@@ -63,9 +63,9 @@ export function MatchCard({ match, compact = false }: { match: Match, compact?: 
           {/* Away Team */}
           <div className="flex flex-col items-center flex-1 gap-2">
             <img 
-              src={`https://flagcdn.com/w40/${match.awayTeam.flagCode}.png`} 
+              src={`https://flagcdn.com/w40/${match.awayTeam.flagCode}.png`}
               alt={`${match.awayTeam.name} flag`}
-              className="w-10 h-auto rounded-sm shadow-sm group-hover:scale-110 transition-transform"
+              className="w-10 h-7 object-cover rounded-sm shadow-sm group-hover:scale-110 transition-transform"
             />
             <span className="font-bold text-center leading-tight">{match.awayTeam.name}</span>
           </div>

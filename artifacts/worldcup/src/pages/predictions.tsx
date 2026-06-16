@@ -42,7 +42,7 @@ export default function Predictions() {
                     <td className="px-6 py-4">
                       <Link href={`/teams/${pred.team.id}`}>
                         <div className="flex items-center gap-3 cursor-pointer group w-max">
-                          <img src={`https://flagcdn.com/w40/${pred.team.flagCode}.png`} alt="" className="w-6 h-auto rounded-sm group-hover:scale-110 transition-transform" />
+                          <img src={`https://flagcdn.com/w40/${pred.team.flagCode}.png`} alt="" className="w-6 h-4 object-cover rounded-sm group-hover:scale-110 transition-transform" />
                           <span className={`font-bold uppercase tracking-tight group-hover:text-primary transition-colors ${pred.eliminated ? 'line-through' : ''}`}>
                             {pred.team.name}
                           </span>

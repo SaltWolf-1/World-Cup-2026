@@ -140,7 +140,7 @@ function MatchCard({ match, size = "md" }: { match: BracketMatch; size?: "sm" | 
   return (
     <div className={cn(
       "bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:border-primary/40 transition-all group",
-      size === "lg" && "border-primary/30 shadow-[0_0_20px_rgba(204,255,0,0.08)]",
+      size === "lg" && "border-primary/30 shadow-[0_0_20px_rgba(232,25,60,0.08)]",
     )}>
       <div className={cn(
         "px-3 py-1 border-b border-border flex items-center justify-between gap-2",
@@ -236,7 +236,7 @@ export default function Knockout() {
             <Trophy className="w-3.5 h-3.5" />
             World Cup Final · Jul 19 · MetLife Stadium, New York
           </div>
-          <div className="bg-card border border-primary/30 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(204,255,0,0.1)]">
+          <div className="bg-card border border-primary/30 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(232,25,60,0.1)]">
             <div className="px-4 py-2 bg-primary/5 border-b border-border flex items-center justify-between">
               <span className="font-mono text-xs uppercase tracking-widest text-primary">Champion</span>
               <Trophy className="w-4 h-4 text-primary" />

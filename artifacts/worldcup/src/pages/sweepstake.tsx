@@ -97,7 +97,7 @@ function StepDot({ n, active, done }: { n: number; active: boolean; done: boolea
     <div className={cn(
       "w-8 h-8 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all duration-300",
       done ? "bg-primary border-primary text-primary-foreground" :
-      active ? "border-primary text-primary bg-primary/10 shadow-[0_0_10px_rgba(204,255,0,0.3)]" :
+      active ? "border-primary text-primary bg-primary/10 shadow-[0_0_10px_rgba(232,25,60,0.3)]" :
       "border-border text-muted-foreground",
     )}>
       {done ? <Check className="w-4 h-4" /> : n}
@@ -209,7 +209,7 @@ function ConfigureStep({
               className={cn(
                 "flex flex-col items-start gap-1 px-4 py-3 rounded-xl border text-left transition-all duration-200",
                 stageIdx === i
-                  ? "border-primary bg-primary/10 shadow-[0_0_12px_rgba(204,255,0,0.15)]"
+                  ? "border-primary bg-primary/10 shadow-[0_0_12px_rgba(232,25,60,0.15)]"
                   : "border-border bg-card hover:border-primary/40 hover:bg-primary/5",
               )}
             >
@@ -261,7 +261,7 @@ function ConfigureStep({
         className={cn(
           "w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition-all duration-200",
           valid && !loading
-            ? "bg-primary text-primary-foreground hover:brightness-110 shadow-[0_0_20px_rgba(204,255,0,0.2)] active:scale-98"
+            ? "bg-primary text-primary-foreground hover:brightness-110 shadow-[0_0_20px_rgba(232,25,60,0.2)] active:scale-98"
             : "bg-muted text-muted-foreground cursor-not-allowed",
         )}
       >
@@ -337,7 +337,7 @@ function PlayersStep({
         </button>
         <button
           onClick={onDraw}
-          className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-wider text-sm hover:brightness-110 shadow-[0_0_20px_rgba(204,255,0,0.2)] active:scale-98 transition-all"
+          className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-wider text-sm hover:brightness-110 shadow-[0_0_20px_rgba(232,25,60,0.2)] active:scale-98 transition-all"
         >
           <Shuffle className="w-4 h-4" />
           Draw Teams!
@@ -390,7 +390,7 @@ function ShareBar({
     <button
       onClick={onSave}
       disabled={isSaving}
-      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-wider text-xs hover:brightness-110 shadow-[0_0_16px_rgba(204,255,0,0.2)] active:scale-98 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-black uppercase tracking-wider text-xs hover:brightness-110 shadow-[0_0_16px_rgba(232,25,60,0.2)] active:scale-98 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {isSaving
         ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>

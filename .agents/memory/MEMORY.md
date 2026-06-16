@@ -1,0 +1,3 @@
+- [FIFA WC 2026 design](worldcup-design.md) — Primary color is FIFA Crimson Red HSL(354,84%,58%) dark / HSL(354,84%,46%) light; replaces neon lime.
+- [Replit Auth web-only setup](replit-auth-setup.md) — Web-only: removed mobile routes from auth.ts template; api-zod index must only export from generated/api (not types); orval config must omit schemas dir.
+- [Orval codegen gotcha](orval-codegen.md) — Do NOT add `schemas: { path: ... }` to orval zod config — causes duplicate name conflicts with Zod schema barrel; types dir is redundant when using Zod.

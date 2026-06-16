@@ -4,7 +4,7 @@ import { formatMatchTime, formatMinute } from "@/lib/formatters";
 import { LivePulse } from "@/components/live-pulse";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { Activity, Clock, MapPin, Flag, AlertTriangle, MonitorPlay } from "lucide-react";
+import { Activity, Clock, MapPin, Flag, AlertTriangle } from "lucide-react";
 
 export default function MatchDetail() {
   const params = useParams();
@@ -44,14 +44,14 @@ export default function MatchDetail() {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Match Header Scoreboard */}
       <div className={cn(
-        "relative overflow-hidden rounded-xl border border-border bg-card p-6 md:p-12",
+        "relative overflow-hidden rounded-xl border border-border bg-card p-4 md:p-6",
         isLive && "border-destructive/50 shadow-[0_0_30px_rgba(255,0,0,0.15)]"
       )}>
         {/* Background glow based on team colors could go here, for now just a gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
         
         <div className="relative z-10 flex flex-col items-center">
-          <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider text-muted-foreground mb-8">
+          <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider text-muted-foreground mb-4">
             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {match.venue || "TBD"}</span>
             <span>•</span>
             <span>{match.group ? `Group ${match.group}` : match.stage}</span>
@@ -61,13 +61,13 @@ export default function MatchDetail() {
 
           <div className="w-full flex items-center justify-between max-w-4xl mx-auto">
             {/* Home Team */}
-            <div className="flex flex-col items-center flex-1 gap-4">
-              <img 
-                src={`https://flagcdn.com/w160/${match.homeTeam.flagCode}.png`} 
+            <div className="flex flex-col items-center flex-1 gap-3">
+              <img
+                src={`https://flagcdn.com/w160/${match.homeTeam.flagCode}.png`}
                 alt={`${match.homeTeam.name} flag`}
-                className="w-24 md:w-32 h-auto rounded-md shadow-lg"
+                className="w-16 md:w-24 h-10 md:h-16 object-cover rounded-md shadow-lg"
               />
-              <span className="font-black text-2xl md:text-4xl text-center uppercase tracking-tight skew-x-[-5deg]">{match.homeTeam.name}</span>
+              <span className="font-black text-lg md:text-2xl text-center uppercase tracking-tight skew-x-[-5deg]">{match.homeTeam.name}</span>
             </div>
 
             {/* Score */}
@@ -88,34 +88,34 @@ export default function MatchDetail() {
               )}
 
               {(isLive || isCompleted) ? (
-                <div className="font-mono text-6xl md:text-8xl font-black tracking-tighter flex items-center gap-4 md:gap-8 drop-shadow-md">
+                <div className="font-mono text-4xl md:text-6xl font-black tracking-tighter flex items-center gap-4 md:gap-8 drop-shadow-md">
                   <span className={cn(match.homeScore! > match.awayScore! && "text-primary")}>{match.homeScore}</span>
                   <span className="text-muted-foreground/20">-</span>
                   <span className={cn(match.awayScore! > match.homeScore! && "text-primary")}>{match.awayScore}</span>
                 </div>
               ) : (
-                <div className="font-mono text-4xl md:text-6xl font-black tracking-tighter text-muted-foreground/30">
+                <div className="font-mono text-3xl md:text-4xl font-black tracking-tighter text-muted-foreground/30">
                   vs
                 </div>
               )}
             </div>
 
             {/* Away Team */}
-            <div className="flex flex-col items-center flex-1 gap-4">
-              <img 
-                src={`https://flagcdn.com/w160/${match.awayTeam.flagCode}.png`} 
+            <div className="flex flex-col items-center flex-1 gap-3">
+              <img
+                src={`https://flagcdn.com/w160/${match.awayTeam.flagCode}.png`}
                 alt={`${match.awayTeam.name} flag`}
-                className="w-24 md:w-32 h-auto rounded-md shadow-lg"
+                className="w-16 md:w-24 h-10 md:h-16 object-cover rounded-md shadow-lg"
               />
-              <span className="font-black text-2xl md:text-4xl text-center uppercase tracking-tight skew-x-[-5deg]">{match.awayTeam.name}</span>
+              <span className="font-black text-lg md:text-2xl text-center uppercase tracking-tight skew-x-[-5deg]">{match.awayTeam.name}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8">
         {/* Timeline */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6">
           <h3 className="text-xl font-bold uppercase tracking-tight flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />
             Match Timeline
@@ -149,41 +149,6 @@ export default function MatchDetail() {
             ) : (
               <div className="text-center py-12 text-muted-foreground">
                 <p className="font-mono uppercase tracking-wider">No events recorded yet</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Highlights */}
-        <div className="space-y-6">
-          <h3 className="text-xl font-bold uppercase tracking-tight flex items-center gap-2">
-            <MonitorPlay className="w-5 h-5 text-primary" />
-            Highlights Log
-          </h3>
-          
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
-            {match.highlights && match.highlights.length > 0 ? (
-              <div className="divide-y divide-border">
-                {match.highlights.map((hl) => (
-                  <div key={hl.id} className="p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-primary/10 text-primary p-2 rounded-md">
-                        <EventIcon type={hl.type} />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold font-mono">{hl.minute}'</span>
-                          <span className="text-xs uppercase tracking-wider text-muted-foreground">{hl.type.replace('_', ' ')}</span>
-                        </div>
-                        <p className="text-sm font-medium">{hl.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-8 text-center text-muted-foreground">
-                <p className="font-mono uppercase tracking-wider text-sm">No highlights available</p>
               </div>
             )}
           </div>

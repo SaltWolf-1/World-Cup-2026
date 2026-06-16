@@ -146,7 +146,7 @@ export default function Dashboard() {
           {summary?.followedTeamsPlaying && summary.followedTeamsPlaying.length > 0 && (
             <section>
               <h2 className="text-xl font-bold uppercase tracking-tight mb-4">Followed Teams Playing</h2>
-              <div className="bg-card border border-primary/30 rounded-lg p-4 shadow-[0_0_15px_rgba(204,255,0,0.05)]">
+              <div className="bg-card border border-primary/30 rounded-lg p-4 shadow-[0_0_15px_rgba(232,25,60,0.05)]">
                 <div className="flex flex-wrap gap-2">
                   {summary.followedTeamsPlaying.map(team => (
                     <Link key={team.id} href={`/teams/${team.id}`}>
@@ -168,7 +168,7 @@ export default function Dashboard() {
 
 function StatCard({ title, value, icon: Icon, loading, highlight = false }: { title: string, value?: string, icon: any, loading: boolean, highlight?: boolean }) {
   return (
-    <div className={`bg-card border rounded-lg p-4 md:p-6 transition-all ${highlight ? 'border-primary shadow-[0_0_15px_rgba(204,255,0,0.1)]' : 'border-border'}`}>
+    <div className={`bg-card border rounded-lg p-4 md:p-6 transition-all ${highlight ? 'border-primary shadow-[0_0_15px_rgba(232,25,60,0.1)]' : 'border-border'}`}>
       <div className="flex items-center gap-2 text-muted-foreground mb-2">
         <Icon className={`w-4 h-4 ${highlight ? 'text-primary' : ''}`} />
         <h3 className="text-xs font-mono uppercase tracking-wider">{title}</h3>
