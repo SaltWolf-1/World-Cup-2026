@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "pnpm"]
+
+[phases.install]
+cmds = ["pnpm install"]
+
+[phases.build]
+cmds = ["pnpm build --filter @workspace/api-server"]
+
+[start]
+cmd = "pnpm start --filter @workspace/api-server"
